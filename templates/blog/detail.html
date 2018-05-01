@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load blog_tags %}
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clean Blog - Start Bootstrap Theme</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'blog/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Additional fonts for this theme -->
+    <link href="{% static 'blog/lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this theme -->
+    <link href="{% static 'blog/css/clean-blog.min.css' %}" rel="stylesheet">
+
+    <!-- Temporary navbar container fix until Bootstrap 4 is patched -->
+    <style>
+    .navbar-toggler {
+        z-index: 1;
+    }
+    
+    @media (max-width: 576px) {
+        nav > .container {
+            width: 100%;
+        }
+    }
+    </style>
+
+</head>
+
+<body>
+
+      <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-light" id="mainNav">
+        <div class="container">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand page-scroll" href="{% url 'blog:index' %}">黄万军的个人博客</a>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="{% url 'blog:index' %}">主页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="{% url 'blog:about' %}">关于我</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="{% url 'blog:all_post' %}">文章列表</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="{% url 'blog:contact' %}">联系我</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="intro-header" style="background-image: url('/static/blog/img/post-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                    <div class="post-heading">
+                       <h1>永远在路上</h1>
+                        <h2 class="subheading">每天，遇见更好的自己</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <article class="post post-{{ post.pk }}">
+                        <header class="entry-header">
+                        <h1 class="entry-title">{{ post.title }}</h1>
+                        <div class="entry-meta">
+                            <span class="post-category"><a href="#">{{ post.category_name }}</a></span>
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
+                            <span class="post-author"><a href="#">{{ post.author }}</a></span>
+                            <!--<span class="comments-link"><a href="#">4 评论</a></span>-->
+                            <span class="views-count"><a href="#">{{ post.views }} 阅读</a></span>
+                        </div>
+                        </header>
+                        <div class="entry-content clearfix">
+                            {{ post.body|safe }}
+                        </div>
+                    </article>
+                    <div class="return_top cl-effect-14" align="center">
+                        <a href="{{ post.get_absolute_url }}" class="more-link">返回顶部 <span class="meta-nav">→</span></a>
+                    </div>
+
+
+                </div>
+                <aside class="col-md-4">
+                <div class="widget widget-recent-posts">
+                    <h3 class="widget-title">最新文章</h3>
+                        {% get_recent_posts as recent_post_list %}
+                    <ul>
+                    {% for post in recent_post_list %}
+                        <li>
+                         <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                        </li>
+                    {% empty %}
+                    暂无文章！
+                    {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="widget widget-archives">
+                    <h3 class="widget-title">归档</h3>
+                    {% archives as date_list %}
+                    <ul>
+                        {% for date in date_list %}
+                            <li>
+                                <a href="{% url 'blog:archives' date.year date.month %}">{{ date.year }}
+                                    年 {{ date.month }} 月</a>
+                            </li>
+                        {% empty %}
+                            暂无归档！
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="widget widget-category">
+                    <h3 class="widget-title">分类</h3>
+                    {% get_categories as category_list %}
+                    <ul>
+                        {% for category in category_list %}
+                            <li>
+                                <a href="{% url 'blog:category' category.pk %}">{{ category.name }} <span
+                                        class="post-count">({{ category.num_posts }})</span></a>
+                            </li>
+                        {% empty %}
+                            暂无分类！
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </aside>
+            </div>
+        </div>
+    </article>
+
+    <hr>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="https://twitter.com/7Niwu3Vs1v9Fmt8">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://weibo.com/5283319958/profile?topnav=1&wvr=6">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/haungwanjun">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; 黄万军 </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- jQuery Version 3.1.1 -->
+    <script src="{% static 'blog/lib/jquery/jquery.js' %}"></script>
+
+    <!-- Tether -->
+    <script src="{% static 'blog/lib/tether/tether.min.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'blog/lib/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="{% static 'blog/js/clean-blog.min.js' %}"></script>
+
+</body>
+
+</html>
