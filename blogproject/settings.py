@@ -25,8 +25,8 @@ SECRET_KEY = '9$v3n^^5-)q3v7gsq*+c_(y@t@m%2t!b**16j4r1^6uaq-z=+$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost ', '.huangwanjun.com']
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost ', '.huangwanjun.top']
+# ALLOWED_HOSTS = []
 
 # Application definition
 
